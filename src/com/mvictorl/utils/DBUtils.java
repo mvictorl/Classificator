@@ -11,8 +11,8 @@ public class DBUtils {
     /*~~~~~ USER database tools ~~~~*/
     public static User findUser(Connection conn, String userName, String password) throws SQLException {
 
-        String sql = "SELECT a.User_Name, a.Password, a.Gender FROM User_Account a "
-                + " WHERE a.User_Name = ? AND a.password= ?";
+        String sql = "SELECT a.idUsers, a.nameUser, a.userPassword, a.role_id FROM users a "
+                   + "WHERE a.nameUser = ? AND a.userPassword = ?";
 
         PreparedStatement pstm = conn.prepareStatement(sql);
         pstm.setString(1, userName);
@@ -20,10 +20,13 @@ public class DBUtils {
         ResultSet rs = pstm.executeQuery();
 
         if (rs.next()) {
-            String gender = rs.getString("Gender");
+            int idUsers = rs.getInt("idUsers");
+            int role_id = rs.getInt("role_id");
             User user = new User();
+            user.setId(idUsers);
             user.setName(userName);
             user.setPassword(password);
+            user.setRole(role_id);
             return user;
         }
         return null;
@@ -31,7 +34,8 @@ public class DBUtils {
 
     public static User findUser(Connection conn, String userName) throws SQLException {
 
-        String sql = "SELECT a.User_Name, a.Password, a.Gender FROM User_Account a " + " WHERE a.User_Name = ? ";
+        String sql = "SELECT a.idUsers, a.nameUser, a.userPassword, a.role_id FROM users a "
+                   + "WHERE a.nameUser = ? ";
 
         PreparedStatement pstm = conn.prepareStatement(sql);
         pstm.setString(1, userName);
@@ -39,11 +43,14 @@ public class DBUtils {
         ResultSet rs = pstm.executeQuery();
 
         if (rs.next()) {
-            String password = rs.getString("Password");
-            String gender = rs.getString("Gender");
+            int idUsers = rs.getInt("idUsers");
+            String password = rs.getString("userPassword");
+            int role_id = rs.getInt("role_id");
             User user = new User();
+            user.setId(idUsers);
             user.setName(userName);
             user.setPassword(password);
+            user.setRole(role_id);
             return user;
         }
         return null;
