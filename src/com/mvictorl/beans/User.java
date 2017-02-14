@@ -4,9 +4,14 @@ public class User {
     private int id;
     private String name;
     private String password;
-    private int role;
+    private Role role;
+    private Woker woker;
 
     public User() { }
+
+    public Woker getWoker() { return woker; }
+
+    public void setWoker(Woker woker) { this.woker = woker; }
 
     public int getId() { return id; }
 
@@ -20,7 +25,7 @@ public class User {
 
     public void setPassword(String password) { this.password = password; }
 
-    public int getRole() { return role; }
+    public Role getRole() { return role; }
 
-    public void setRole(int role) { this.role = role; }
+    public void setRole(Role role) { this.role = role; }
 }

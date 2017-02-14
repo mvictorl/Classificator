@@ -28,11 +28,9 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                        aria-haspopup="true" aria-expanded="false">данные</a>
                                     <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/subdivisionList">Подразделения</a>
-                                        </li>
-                                        <li><a href="${pageContext.request.contextPath}/employeeList">Сотрудники</a>
-                                        </li>
+                                        <li><a href="${pageContext.request.contextPath}/filialList">Филиалы</a></li>
+                                        <li><a href="${pageContext.request.contextPath}/subdivisionList">Подразделения</a></li>
+                                        <li><a href="${pageContext.request.contextPath}/employeeList">Сотрудники</a></li>
                                         <li><a href="${pageContext.request.contextPath}/systemList">АИС</a></li>
                                         <li><a href="${pageContext.request.contextPath}/hardwareList">СВТ</a></li>
                                         <li><a href="${pageContext.request.contextPath}/softwareList">ПО</a></li>

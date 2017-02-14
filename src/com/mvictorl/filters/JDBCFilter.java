@@ -13,14 +13,16 @@ import java.util.Map;
 
 @WebFilter(filterName = "JDBCFilter")
 public class JDBCFilter implements Filter {
-    public void init(FilterConfig config) throws ServletException {
-    }
-    
-    public void destroy() {
-    }
 
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
-        HttpServletRequest request = (HttpServletRequest) req;
+    public JDBCFilter() { }
+
+    public void init(FilterConfig config) throws ServletException { }
+    
+    public void destroy() { }
+
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
+
+        HttpServletRequest req = (HttpServletRequest) request;
         //
         // Only open connections for the special requests need
         // connection. (For example, the path to the servlet, JSP, ..)
@@ -28,9 +30,9 @@ public class JDBCFilter implements Filter {
         // Avoid open connection for commons request
         // (for example: image, css, javascript,... )
         //
-        if (this.needJDBC(request)) {
+        if (this.needJDBC(req)) {
 
-            System.out.println("Open Connection for: " + request.getServletPath());
+            System.out.println("Open Connection for: " + req.getServletPath());
 
             Connection conn = null;
             try {
@@ -41,11 +43,11 @@ public class JDBCFilter implements Filter {
                 conn.setAutoCommit(false);
 
                 // Store connection in attribute of request.
-                MyUtils.storeConnection(req, conn);
+                MyUtils.storeConnection(request, conn);
 
                 // Allow request to go forward
                 // (Go to the next filter or target)
-                chain.doFilter(req, resp);
+                chain.doFilter(request, response);
 
                 // Commit change.
                 conn.commit();
@@ -61,9 +63,10 @@ public class JDBCFilter implements Filter {
         // With commons requests (images, css, html, ..)
         // No need to open the connection.
         else {
+
             // Allow request to go forward
             // (Go to the next filter or target)
-            chain.doFilter(req, resp);
+            chain.doFilter(request, response);
         }
     }
 
