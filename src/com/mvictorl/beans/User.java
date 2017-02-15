@@ -7,7 +7,9 @@ public class User {
     private Role role;
     private Woker woker;
 
-    public User() { }
+    public User() {
+        woker = null;
+    }
 
     public Woker getWoker() { return woker; }
 

@@ -18,7 +18,7 @@
             <h3>Пользователь: </h3>
         </div>
         <div class="col-sm-9">
-            <h2>${user.name}</h2>
+            <h3>${user.name}</h3>
         </div>
     </div>
     <div class="row">
@@ -26,7 +26,7 @@
             <h3>ID: </h3>
         </div>
         <div class="col-sm-9">
-            <h2>${user.id}</h2>
+            <h3>${user.id}</h3>
         </div>
     </div>
     <div class="row">
@@ -34,10 +34,11 @@
             <h3>Роль: </h3>
         </div>
         <div class="col-sm-9">
-            <h2>${user.role}</h2>
+            <h3>${user.role.id} (${user.role.name})</h3>
         </div>
     </div>
-    <a class="btn btn-info" href="${pageContext.request.contextPath}/doLogoff">Выйти</a>
+    <a class="btn btn-danger pull-right" href="${pageContext.request.contextPath}/doLogoff">Выйти</a>
+    </div>
 </section>
 <jsp:include page="_footer.jsp"></jsp:include>
 <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
