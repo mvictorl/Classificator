@@ -5,15 +5,15 @@ public class User {
     private String name;
     private String password;
     private Role role;
-    private Woker woker;
+    private int woker;
 
     public User() {
-        woker = null;
+        woker = 0;
     }
 
-    public Woker getWoker() { return woker; }
+    public int getWoker() { return woker; }
 
-    public void setWoker(Woker woker) { this.woker = woker; }
+    public void setWoker(int woker) { this.woker = woker; }
 
     public int getId() { return id; }
 

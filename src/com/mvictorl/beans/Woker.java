@@ -5,12 +5,12 @@ public class Woker {
     private String surname;
     private String name;
     private String patronymic;
-    private Woker parent;
+    private int parent;
     private Division division;
     private boolean userExist;
 
     public Woker() {
-        parent = null;
+        parent = 0;
         division = null;
         userExist = false;
     }
@@ -31,9 +31,9 @@ public class Woker {
 
     public void setPatronymic(String patronymic) { this.patronymic = patronymic; }
 
-    public Woker getParent() { return parent; }
+    public int getParent() { return parent; }
 
-    public void setParent(Woker parent) { this.parent = parent; }
+    public void setParent(int parent) { this.parent = parent; }
 
     public Division getDivision() { return division; }
 

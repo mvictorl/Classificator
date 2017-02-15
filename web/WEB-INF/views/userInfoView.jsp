@@ -31,6 +31,22 @@
     </div>
     <div class="row">
         <div class="col-sm-3">
+            <h3>Сотрудник: </h3>
+        </div>
+        <div class="col-sm-9">
+            <h3>${active_woker.surname} ${active_woker.name} ${active_woker.patronymic}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <h3>Отдел: </h3>
+        </div>
+        <div class="col-sm-9">
+            <h3>${active_woker.division.id} (${active_woker.division.name})</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
             <h3>Роль: </h3>
         </div>
         <div class="col-sm-9">
