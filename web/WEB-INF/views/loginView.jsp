@@ -20,14 +20,14 @@
             <label for="id_name" class="col-sm-2 control-label">Пользователь</label>
             <div class="col-sm-6">
                 <input type="text" class="form-control" id="id_name" placeholder="Имя пользователя"
-                       name="userName" value="${user.userName}">
+                       name="userName" value="${user.name}">
             </div>
         </div>
         <div class="form-group">
             <label for="id_password" class="col-sm-2 control-label">Пароль</label>
             <div class="col-sm-6">
                 <input type="password" class="form-control" id="id_password" placeholder="Пароль"
-                       name="userPassword" value="${user.userPassword}">
+                       name="userPassword" value="${user.password}">
             </div>
         </div>
         <div class="form-group">

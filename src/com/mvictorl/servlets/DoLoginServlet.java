@@ -1,6 +1,7 @@
 package com.mvictorl.servlets;
 
 import com.mvictorl.beans.User;
+import com.mvictorl.beans.Woker;
 import com.mvictorl.utils.DBUtils;
 import com.mvictorl.utils.MyUtils;
 
@@ -32,6 +33,7 @@ public class DoLoginServlet extends HttpServlet {
         boolean remember = "Y".equals(rememberMeStr);
 
         User user = null;
+        Woker woker = null;
         boolean hasError = false;
         String errorString = null;
 
@@ -43,10 +45,9 @@ public class DoLoginServlet extends HttpServlet {
             Connection conn = MyUtils.getStoredConnection(request);
             try {
                 user = DBUtils.findUser(conn, userName, userPassword);
-
                 if (user == null) {
                     hasError = true;
-                    errorString = "Не верные имя пользователя либо пароль!";
+                    errorString = "Не верные имя пользователя и/или пароль!";
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -54,7 +55,6 @@ public class DoLoginServlet extends HttpServlet {
                 errorString = e.getMessage();
             }
         }
-
         // If error, forward to /WEB-INF/views/login.jsp
         if (hasError) {
             user = new User();
@@ -71,24 +71,39 @@ public class DoLoginServlet extends HttpServlet {
 
             dispatcher.forward(request, response);
         }
-
         // If no error
         // Store user information in Session
         // And redirect to userInfo page.
         else {
+            if (user.getWoker() > 0) {
+                Connection conn = MyUtils.getStoredConnection(request);
+                try {
+                    woker = DBUtils.findWoker(conn, user.getWoker());
+
+                    if (woker == null) {
+                        hasError = true;
+                        errorString = "Не верные данные сотрудника!";
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    hasError = true;
+                    errorString += "\n" + e.getMessage();
+                }
+                request.setAttribute("active_woker", woker);
+            }
+
             HttpSession session = request.getSession();
             MyUtils.storeLoginedUser(session, user);
+            MyUtils.storeActiveWoker(session, woker);
 
             // If user checked "Remember me".
-            if(remember)  {
-                MyUtils.storeUserCookie(response,user);
+            if (remember) {
+                MyUtils.storeUserCookie(response, user);
             }
-
             // Else delete cookie.
-            else  {
+            else {
                 MyUtils.deleteUserCookie(response);
             }
-
             // Redirect to userInfo page.
             response.sendRedirect(request.getContextPath() + "/userInfo");
         }

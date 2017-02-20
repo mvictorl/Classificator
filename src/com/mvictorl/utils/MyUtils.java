@@ -1,6 +1,7 @@
 package com.mvictorl.utils;
 
 import com.mvictorl.beans.User;
+import com.mvictorl.beans.Woker;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
@@ -35,6 +36,18 @@ public class MyUtils {
     public static User getLoginedUser(HttpSession session) {
         User loginedUser = (User) session.getAttribute("loginedUser");
         return loginedUser;
+    }
+
+    // Store Active Woker in Session.
+    public static void storeActiveWoker(HttpSession session, Woker activeWoker) {
+        // On the JSP can access ${loginedUser}
+        session.setAttribute("activeWoker", activeWoker);
+    }
+
+    // Get the Active Woker information stored in the session.
+    public static Woker getActiveWoker(HttpSession session) {
+        Woker activeWoker = (Woker) session.getAttribute("activeWoker");
+        return activeWoker;
     }
 
     // Store info in Cookie

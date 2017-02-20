@@ -15,6 +15,7 @@
 <jsp:include page="_header.jsp"></jsp:include>
 <section class="container">
     <h1>Стартовая страница</h1>
+    <p style="color: red;">${errorString}</p>
     <p>Данная программа предназначена для автоматизации проведения классификации объектов защиты.</p>
     <br>
     <% if (session.getAttribute("loginedUser") == null) { %>
