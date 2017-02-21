@@ -20,7 +20,7 @@
             <label for="id_name" class="col-sm-2 control-label">Пользователь</label>
             <div class="col-sm-6">
                 <input type="text" class="form-control" id="id_name" placeholder="Имя пользователя"
-                       name="userName" value="${user.name}">
+                       name="userName" value="${user.name}" autofocus>
             </div>
         </div>
         <div class="form-group">

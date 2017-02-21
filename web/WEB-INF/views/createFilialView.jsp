@@ -20,7 +20,7 @@
             <label for="id_code" class="col-sm-2 control-label">Код:</label>
             <div class="col-sm-2">
                 <input type="number" min="0" step="1" class="form-control" id="id_code" placeholder="Код"
-                       name="code" value="${filifl.id}">
+                       name="id" value="${filial.id}">
             </div>
         </div>
         <div class="form-group">

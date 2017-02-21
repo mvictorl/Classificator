@@ -44,7 +44,7 @@ public class DeleteFilialServlet extends HttpServlet {
             request.setAttribute("errorString", errorString);
             //
             RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/WEB-INF/views/deleteFilialErrorView.jsp");
+                    .getRequestDispatcher("filialList");
             dispatcher.forward(request, response);
         }
 
