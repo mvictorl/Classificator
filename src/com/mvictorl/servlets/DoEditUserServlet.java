@@ -15,10 +15,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @WebServlet(urlPatterns = {"/doEditFilial"})
-public class DoEditFilialServlet extends HttpServlet {
+public class DoEditUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    public DoEditFilialServlet() {
+    public DoEditUserServlet() {
         super();
     }
 

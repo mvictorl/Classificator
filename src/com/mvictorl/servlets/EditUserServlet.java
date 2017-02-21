@@ -14,11 +14,11 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@WebServlet(urlPatterns = {"/doEditFilial"})
-public class DoEditFilialServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/editFilial" })
+public class EditUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    public DoEditFilialServlet() {
+    public EditUserServlet() {
         super();
     }
 
@@ -28,36 +28,32 @@ public class DoEditFilialServlet extends HttpServlet {
         Connection conn = MyUtils.getStoredConnection(request);
 
         int id = Integer.parseInt(request.getParameter("id"));
-        String sh_name = (String) request.getParameter("sh_name");
-        String name = (String) request.getParameter("name");
 
-        Filial filial = new Filial(id, name, sh_name);
-        Filial tmp = null;
+        Filial filial = null;
         String errorString = null;
 
         try {
-            DBUtils.updateFilial(conn, filial);
+            filial = DBUtils.findFilial(conn, id);
         } catch (SQLException e) {
             e.printStackTrace();
             errorString = e.getMessage();
         }
 
-        // Store infomation to request attribute, before forward to views.
+        // If no error.
+        // The product does not exist to edit.
+        // Redirect to productList page.
+        if (errorString != null && filial == null) {
+            response.sendRedirect(request.getServletPath() + "/filialList");
+            return;
+        }
+
+        // Store errorString in request attribute, before forward to views.
         request.setAttribute("errorString", errorString);
         request.setAttribute("filial", filial);
 
-        // If error, forward to Edit page.
-        if (errorString != null) {
-            RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/WEB-INF/views/editFilialView.jsp");
-            dispatcher.forward(request, response);
-        }
-
-        // If everything nice.
-        // Redirect to the product listing page.
-        else {
-            response.sendRedirect(request.getContextPath() + "/filialList");
-        }
+        RequestDispatcher dispatcher = request.getServletContext()
+                .getRequestDispatcher("/WEB-INF/views/editFilialView.jsp");
+        dispatcher.forward(request, response);
     }
 
     @Override

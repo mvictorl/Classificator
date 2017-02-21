@@ -30,7 +30,6 @@ public class EditFilialServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
 
         Filial filial = null;
-
         String errorString = null;
 
         try {

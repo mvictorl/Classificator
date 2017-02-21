@@ -1,6 +1,5 @@
 package com.mvictorl.servlets;
 
-import com.mvictorl.beans.Filial;
 import com.mvictorl.utils.DBUtils;
 import com.mvictorl.utils.MyUtils;
 
@@ -14,11 +13,11 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@WebServlet(urlPatterns = {"/doEditFilial"})
-public class DoEditFilialServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/deleteFilial" })
+public class DeleteUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    public DoEditFilialServlet() {
+    public DeleteUserServlet() {
         super();
     }
 
@@ -28,28 +27,24 @@ public class DoEditFilialServlet extends HttpServlet {
         Connection conn = MyUtils.getStoredConnection(request);
 
         int id = Integer.parseInt(request.getParameter("id"));
-        String sh_name = (String) request.getParameter("sh_name");
-        String name = (String) request.getParameter("name");
 
-        Filial filial = new Filial(id, name, sh_name);
-        Filial tmp = null;
         String errorString = null;
 
         try {
-            DBUtils.updateFilial(conn, filial);
+            DBUtils.deleteProduct(conn, id);
         } catch (SQLException e) {
             e.printStackTrace();
             errorString = e.getMessage();
         }
 
-        // Store infomation to request attribute, before forward to views.
-        request.setAttribute("errorString", errorString);
-        request.setAttribute("filial", filial);
-
-        // If error, forward to Edit page.
+        // If an error redirected to an error page.
         if (errorString != null) {
+
+            // Store the information in the request attribute, before forward to views.
+            request.setAttribute("errorString", errorString);
+            //
             RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/WEB-INF/views/editFilialView.jsp");
+                    .getRequestDispatcher("filialList");
             dispatcher.forward(request, response);
         }
 
