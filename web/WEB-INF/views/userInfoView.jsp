@@ -34,7 +34,7 @@
             <h3>Сотрудник: </h3>
         </div>
         <div class="col-sm-9">
-            <h3>${active_woker.surname} ${active_woker.name} ${active_woker.patronymic}</h3>
+            <h3>${user.worker.surname} ${user.worker.name} ${user.worker.patronymic}</h3>
         </div>
     </div>
     <div class="row">
@@ -42,7 +42,7 @@
             <h3>Отдел: </h3>
         </div>
         <div class="col-sm-9">
-            <h3>${active_woker.division.id} (${active_woker.division.name})</h3>
+            <h3>${user.worker.division.id} (${user.worker.division.name})</h3>
         </div>
     </div>
     <div class="row">
@@ -53,8 +53,8 @@
             <h3>${user.role.id} (${user.role.name})</h3>
         </div>
     </div>
+    <a class="btn btn-success pull-left" href="${pageContext.request.contextPath}/changeUserPass">Сменить пароль</a>
     <a class="btn btn-danger pull-right" href="${pageContext.request.contextPath}/doLogoff">Выйти</a>
-    </div>
 </section>
 <jsp:include page="_footer.jsp"></jsp:include>
 <script src="${pageContext.request.contextPath}/js/jquery.js"></script>

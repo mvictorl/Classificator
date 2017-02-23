@@ -12,11 +12,20 @@ import java.util.List;
 public class DBUtils {
     /*~~~~~ USER database tools ~~~~*/
     public static User findUser(Connection conn, String userName, String password) throws SQLException {
-
+        String sql =    "SELECT u.idUsers, r.idRole, r.nameRole, e.idEmployees, e.surnameEmployee, e.nameEmployee, " +
+                        "e.patronymicEmployee, d.idDivision, d.nameDivision, d.filial_id " +
+                        "FROM users u " +
+                        "LEFT OUTER JOIN roles r ON u.role_id = r.idRole " +
+                        "LEFT OUTER JOIN employees e ON u.woker = e.idEmployees " +
+                        "LEFT OUTER JOIN division d ON e.division_id = d.idDivision " +
+                        "LEFT OUTER JOIN filials f ON d.filial_id = f.idFilial " +
+                        "WHERE u.nameUser = ? AND u.userPassword = ?";
+/*
         String sql = "SELECT u.idUsers, u.role_id, u.woker, r.idRole, r.nameRole " +
                     "FROM users u LEFT OUTER JOIN roles r " +
                     "ON u.role_id = r.idRole " +
                     "WHERE u.nameUser = ? AND u.userPassword = ?";
+*/
 
         PreparedStatement pstm = conn.prepareStatement(sql);
         pstm.setString(1, userName);
@@ -24,63 +33,163 @@ public class DBUtils {
         ResultSet rs = pstm.executeQuery();
 
         if (rs.next()) {
-            int idUsers = rs.getInt("idUsers");
-            int role_id = rs.getInt("role_id");
-            int woker =rs.getInt("woker");
+            Role role = new Role();
             int idRole = rs.getInt("idRole");
             String nameRole = rs.getString("nameRole");
-
-            Role role = new Role();
             role.setId(idRole);
             role.setName(nameRole);
 
+            Division division = new Division();
+            int idDivision = rs.getInt("idDivision");
+            String nameDivision = rs.getString("nameDivision");
+            int idFilial = rs.getInt("filial_id");
+            division.setId(idDivision);
+            division.setName(nameDivision);
+            division.setFilial_id(idFilial);
+
+            Worker worker = new Worker();
+            int idWorker = rs.getInt("idEmployees");
+            String surnameWorker = rs.getString("surnameEmployee");
+            String nameWorker = rs.getString("nameEmployee");
+            String patronymicWorker = rs.getString("patronymicEmployee");
+            worker.setId(idWorker);
+            worker.setSurname(surnameWorker);
+            worker.setName(nameWorker);
+            worker.setPatronymic(patronymicWorker);
+            worker.setDivision(division);
+
             User user = new User();
+            int idUsers = rs.getInt("idUsers");
             user.setId(idUsers);
             user.setName(userName);
             user.setPassword(password);
             user.setRole(role);
-            user.setWoker(woker);
+            user.setWorker(worker);
             return user;
         }
         return null;
     }
 
     public static User findUser(Connection conn, String userName) throws SQLException {
-
-        String sql = "SELECT u.idUsers, u.userPassword, u.role_id, u.woker, r.idRole, r.nameRole " +
-                "FROM users u LEFT OUTER JOIN roles r " +
-                "ON u.role_id = r.idRole " +
-                "WHERE u.nameUser = ?";
+        String sql =    "SELECT u.idUsers, u.userPassword, r.idRole, r.nameRole, e.idEmployees, e.surnameEmployee, " +
+                        "e.nameEmployee, e.patronymicEmployee, d.idDivision, d.nameDivision, d.filial_id " +
+                        "FROM users u " +
+                        "LEFT OUTER JOIN roles r ON u.role_id = r.idRole " +
+                        "LEFT OUTER JOIN employees e ON u.woker = e.idEmployees " +
+                        "LEFT OUTER JOIN division d ON e.division_id = d.idDivision " +
+                        "LEFT OUTER JOIN filials f ON d.filial_id = f.idFilial " +
+                        "WHERE u.nameUser = ?";
 
         PreparedStatement pstm = conn.prepareStatement(sql);
         pstm.setString(1, userName);
         ResultSet rs = pstm.executeQuery();
 
         if (rs.next()) {
-            int idUsers = rs.getInt("idUsers");
-            String userPassword = rs.getString("userPassword");
-            int role_id = rs.getInt("role_id");
-            int woker = rs.getInt("woker");
+            Role role = new Role();
             int idRole = rs.getInt("idRole");
             String nameRole = rs.getString("nameRole");
-
-            Role role = new Role();
             role.setId(idRole);
             role.setName(nameRole);
 
+            Division division = new Division();
+            int idDivision = rs.getInt("idDivision");
+            String nameDivision = rs.getString("nameDivision");
+            int idFilial = rs.getInt("filial_id");
+            division.setId(idDivision);
+            division.setName(nameDivision);
+            division.setFilial_id(idFilial);
+
+            Worker worker = new Worker();
+            int idWorker = rs.getInt("idEmployees");
+            String surnameWorker = rs.getString("surnameEmployee");
+            String nameWorker = rs.getString("nameEmployee");
+            String patronymicWorker = rs.getString("patronymicEmployee");
+            worker.setId(idWorker);
+            worker.setSurname(surnameWorker);
+            worker.setName(nameWorker);
+            worker.setPatronymic(patronymicWorker);
+            worker.setDivision(division);
+
             User user = new User();
+            int idUsers = rs.getInt("idUsers");
+            String userPassword = rs.getString("userPassword");
             user.setId(idUsers);
-            user.setPassword("userPassword");
             user.setName(userName);
+            user.setPassword(userPassword);
             user.setRole(role);
-            user.setWoker(woker);
+            user.setWorker(worker);
             return user;
         }
         return null;
     }
 
-    /*~~~~~ Employee (Woker) database tools ~~~~*/
-    public static Woker findWoker(Connection conn, int id) throws SQLException {
+    public static List<User> queryUsers(Connection conn, int lvl) throws SQLException {
+        String sql =    "SELECT u.idUsers, u.nameUser, u.userPassword, r.idRole, r.nameRole, e.idEmployees, " +
+                "e.surnameEmployee, e.nameEmployee, e.patronymicEmployee, d.idDivision, d.nameDivision, d.filial_id " +
+                "FROM users u " +
+                "LEFT OUTER JOIN roles r ON u.role_id = r.idRole " +
+                "LEFT OUTER JOIN employees e ON u.woker = e.idEmployees " +
+                "LEFT OUTER JOIN division d ON e.division_id = d.idDivision " +
+                "LEFT OUTER JOIN filials f ON d.filial_id = f.idFilial " +
+                "WHERE r.idRole >= ? " +
+                "ORDER BY r.idRole";
+
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setInt(1, lvl);
+
+        ResultSet rs = pstm.executeQuery();
+        List<User> list = new ArrayList<>();
+        while (rs.next()) {
+            Role role = new Role();
+            int idRole = rs.getInt("idRole");
+            String nameRole = rs.getString("nameRole");
+            role.setId(idRole);
+            role.setName(nameRole);
+
+            Division division = new Division();
+            int idDivision = rs.getInt("idDivision");
+            String nameDivision = rs.getString("nameDivision");
+            int idFilial = rs.getInt("filial_id");
+            division.setId(idDivision);
+            division.setName(nameDivision);
+            division.setFilial_id(idFilial);
+
+            Worker worker = new Worker();
+            int idWorker = rs.getInt("idEmployees");
+            String surnameWorker = rs.getString("surnameEmployee");
+            String nameWorker = rs.getString("nameEmployee");
+            String patronymicWorker = rs.getString("patronymicEmployee");
+            worker.setId(idWorker);
+            worker.setSurname(surnameWorker);
+            worker.setName(nameWorker);
+            worker.setPatronymic(patronymicWorker);
+            worker.setDivision(division);
+
+            User user = new User();
+            int idUsers = rs.getInt("idUsers");
+            String userName = rs.getString("nameUser");
+            String userPassword = rs.getString("userPassword");
+            user.setId(idUsers);
+            user.setName(userName);
+            user.setPassword(userPassword);
+            user.setRole(role);
+            user.setWorker(worker);
+            list.add(user);
+        }
+        return list;
+    }
+
+    public static void setUserPassword(Connection conn, int user_id, String new_pass) throws SQLException {
+        String sql = "UPDATE users SET userPassword=? WHERE idUsers=? ";
+        PreparedStatement pstm = conn.prepareStatement(sql);
+
+        pstm.setString(1, new_pass);
+        pstm.setInt(2, user_id);
+        pstm.executeUpdate();
+    }
+
+    /*~~~~~ Employee (Worker) database tools ~~~~*/
+    public static Worker findWoker(Connection conn, int id) throws SQLException {
         String sql = "SELECT e.surnameEmployee, e.nameEmployee, e.patronymicEmployee, " +
                 "e.parent_id, e.user_exist, d.idDivision, d.nameDivision, d.filial_id " +
                 "FROM employees e LEFT OUTER JOIN division d " +
@@ -106,15 +215,15 @@ public class DBUtils {
             division.setName(nameDivision);
             division.setFilial_id(filial_id);
 
-            Woker woker = new Woker();
-            woker.setId(id);
-            woker.setSurname(surname);
-            woker.setName(name);
-            woker.setPatronymic(patronymic);
-            woker.setParent(parent);
-            woker.setDivision(division);
+            Worker worker = new Worker();
+            worker.setId(id);
+            worker.setSurname(surname);
+            worker.setName(name);
+            worker.setPatronymic(patronymic);
+            worker.setParent(parent);
+            worker.setDivision(division);
 
-            return woker;
+            return worker;
         }
         return null;
     }

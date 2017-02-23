@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@WebServlet(urlPatterns = { "/doCreateFilial" })
+@WebServlet(urlPatterns = { "/doCreateUser" })
 public class DoCreateUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

@@ -1,7 +1,7 @@
 package com.mvictorl.servlets;
 
 import com.mvictorl.beans.User;
-import com.mvictorl.beans.Woker;
+import com.mvictorl.beans.Worker;
 import com.mvictorl.utils.DBUtils;
 import com.mvictorl.utils.MyUtils;
 
@@ -33,7 +33,7 @@ public class DoLoginServlet extends HttpServlet {
         boolean remember = "Y".equals(rememberMeStr);
 
         User user = null;
-        Woker woker = null;
+        Worker worker = null;
         boolean hasError = false;
         String errorString = null;
 
@@ -75,26 +75,9 @@ public class DoLoginServlet extends HttpServlet {
         // Store user information in Session
         // And redirect to userInfo page.
         else {
-            if (user.getWoker() > 0) {
-                Connection conn = MyUtils.getStoredConnection(request);
-                try {
-                    woker = DBUtils.findWoker(conn, user.getWoker());
-
-                    if (woker == null) {
-                        hasError = true;
-                        errorString = "Не верные данные сотрудника!";
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    hasError = true;
-                    errorString += "\n" + e.getMessage();
-                }
-                request.setAttribute("active_woker", woker);
-            }
 
             HttpSession session = request.getSession();
             MyUtils.storeLoginedUser(session, user);
-            MyUtils.storeActiveWoker(session, woker);
 
             // If user checked "Remember me".
             if (remember) {

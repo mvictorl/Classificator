@@ -1,18 +1,18 @@
 package com.mvictorl.beans;
 
-public class Woker {
+public class Worker {
     private int id;
     private String surname;
     private String name;
     private String patronymic;
     private int parent;
     private Division division;
-    private boolean userExist;
+    private int user_id;
 
-    public Woker() {
+    public Worker() {
         parent = 0;
         division = null;
-        userExist = false;
+        user_id = -1;
     }
 
     public int getId() { return id; }
@@ -39,7 +39,7 @@ public class Woker {
 
     public void setDivision(Division division) { this.division = division; }
 
-    public boolean isUserExist() { return userExist; }
+    public int isUserExist() { return user_id; }
 
-    public void setUserExist(boolean userExist) { this.userExist = userExist; }
+    public void setUserExist(int user_id) { this.user_id = user_id; }
 }

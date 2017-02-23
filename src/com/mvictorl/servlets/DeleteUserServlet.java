@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@WebServlet(urlPatterns = { "/deleteFilial" })
+@WebServlet(urlPatterns = { "/deleteUser" })
 public class DeleteUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

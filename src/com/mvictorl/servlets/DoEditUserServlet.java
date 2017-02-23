@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@WebServlet(urlPatterns = {"/doEditFilial"})
+@WebServlet(urlPatterns = {"/doEditUser"})
 public class DoEditUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

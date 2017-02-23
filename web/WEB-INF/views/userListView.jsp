@@ -28,28 +28,29 @@
             <tr>
                 <td>${user.name}</td>
                 <td>${user.role.name}</td>
-                <td>${user.name}</td>
+                <td>${user.worker.surname} ${user.worker.name} ${user.worker.patronymic}</td>
                 <td class="text-center">
-                    <a class="btn btn-info btn-xs" href="editFilial?id=${filial.id}">Редактировать</a>
+                    <c:if test=""
+                    <a class="btn btn-info btn-xs" href="editUser?id=${user.id}">Редактировать</a>
                 </td>
                 <td class="text-center">
                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#ModalDelete"
-                            data-id="${filial.id}" data-name="${filial.sh_name}">
+                            data-id="${user.id}" data-name="${user.name}">
                         Удалить
                     </button>
                 </td>
             </tr>
         </c:forEach>
-        <!-- Modal (.modal-body h4) & (.modal-footer a>href) - from filial_del.js -->
+        <!-- Modal (.modal-body h4) & (.modal-footer a>href) - from user_del.js -->
         <div class="modal fade" id="ModalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Удаление филиала</h4>
+                        <h4 class="modal-title" id="myModalLabel">Удаление пользователя</h4>
                     </div>
                     <div class="modal-body">
-                        <h3>Вы действительно хотите удалить филила:</h3>
+                        <h3>Вы действительно хотите удалить пользователя:</h3>
                         <h4 class="alert alert-success"></h4>
                     </div>
                     <div class="modal-footer">

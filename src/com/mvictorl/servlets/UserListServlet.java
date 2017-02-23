@@ -1,6 +1,6 @@
 package com.mvictorl.servlets;
 
-import com.mvictorl.beans.Filial;
+import com.mvictorl.beans.User;
 import com.mvictorl.utils.DBUtils;
 import com.mvictorl.utils.MyUtils;
 
@@ -15,7 +15,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(urlPatterns = { "/filialList" })
+@WebServlet(urlPatterns = { "/userList" })
 public class UserListServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -29,9 +29,12 @@ public class UserListServlet extends HttpServlet {
         Connection conn = MyUtils.getStoredConnection(request);
 
         String errorString = null;
-        List<Filial> list = null;
+        List<User> list = null;
+
+        User loginedUser = (User) request.getSession().getAttribute("loginedUser");
+
         try {
-            list = DBUtils.queryFilial(conn);
+            list = DBUtils.queryUsers(conn, loginedUser.getRole().getId());
         } catch (SQLException e) {
             e.printStackTrace();
             errorString = e.getMessage();
@@ -39,11 +42,11 @@ public class UserListServlet extends HttpServlet {
 
         // Store info in request attribute, before forward to views
         request.setAttribute("errorString", errorString);
-        request.setAttribute("filialList", list);
+        request.setAttribute("userList", list);
 
         // Forward to /WEB-INF/views/productListView.jsp
         RequestDispatcher dispatcher = request.getServletContext()
-                .getRequestDispatcher("/WEB-INF/views/filialListView.jsp");
+                .getRequestDispatcher("/WEB-INF/views/userListView.jsp");
         dispatcher.forward(request, response);
     }
 
