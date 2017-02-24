@@ -1,6 +1,8 @@
 package com.mvictorl.servlets;
 
-import com.mvictorl.beans.Filial;
+import com.mvictorl.beans.Role;
+import com.mvictorl.beans.User;
+import com.mvictorl.beans.Worker;
 import com.mvictorl.utils.DBUtils;
 import com.mvictorl.utils.MyUtils;
 
@@ -10,11 +12,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
-@WebServlet(urlPatterns = { "/editUser" })
+@WebServlet(urlPatterns = {"/editUser"})
 public class EditUserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -26,34 +30,46 @@ public class EditUserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Connection conn = MyUtils.getStoredConnection(request);
+        HttpSession session = request.getSession();
 
-        int id = Integer.parseInt(request.getParameter("id"));
+        String userName = request.getParameter("userName");
+        User current_user = (User) session.getAttribute("loginedUser");
 
-        Filial filial = null;
-        String errorString = null;
-
-        try {
-            filial = DBUtils.findFilial(conn, id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            errorString = e.getMessage();
-        }
-
-        // If no error.
-        // The product does not exist to edit.
-        // Redirect to productList page.
-        if (errorString != null && filial == null) {
-            response.sendRedirect(request.getServletPath() + "/filialList");
+        if (current_user == null) {
+            response.sendRedirect(request.getServletPath() + "/login");
             return;
         }
+        else {
+            User user = null;
+            List<Role> roles = null;
+            List<Worker> workers = null;
+            String errorString = null;
 
-        // Store errorString in request attribute, before forward to views.
-        request.setAttribute("errorString", errorString);
-        request.setAttribute("filial", filial);
+            try {
+                user = DBUtils.findUser(conn, userName);
+                roles = DBUtils.queryRoles(conn, current_user.getRole().getId());
+                workers = DBUtils.queryWorkers(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                errorString = e.getMessage();
+            }
+            // If no error.
+            // The user does not exist to edit.
+            // Redirect to productList page.
+            if (errorString != null && user == null) {
+                response.sendRedirect(request.getServletPath() + "/userList");
+                return;
+            }
+            // Store errorString in request attribute, before forward to views.
+            request.setAttribute("errorString", errorString);
+            request.setAttribute("user", user);
+            request.setAttribute("roles", roles);
+            request.setAttribute("workers", workers);
 
-        RequestDispatcher dispatcher = request.getServletContext()
-                .getRequestDispatcher("/WEB-INF/views/editFilialView.jsp");
-        dispatcher.forward(request, response);
+            RequestDispatcher dispatcher = request.getServletContext()
+                    .getRequestDispatcher("/WEB-INF/views/editUserView.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     @Override

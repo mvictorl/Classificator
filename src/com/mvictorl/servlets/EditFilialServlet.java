@@ -40,7 +40,7 @@ public class EditFilialServlet extends HttpServlet {
         }
 
         // If no error.
-        // The product does not exist to edit.
+        // The filial does not exist to edit.
         // Redirect to productList page.
         if (errorString != null && filial == null) {
             response.sendRedirect(request.getServletPath() + "/filialList");

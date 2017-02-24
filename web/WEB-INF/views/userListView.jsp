@@ -30,8 +30,7 @@
                 <td>${user.role.name}</td>
                 <td>${user.worker.surname} ${user.worker.name} ${user.worker.patronymic}</td>
                 <td class="text-center">
-                    <c:if test=""
-                    <a class="btn btn-info btn-xs" href="editUser?id=${user.id}">Редактировать</a>
+                    <a class="btn btn-info btn-xs" href="editUser?userName=${user.name}">Редактировать</a>
                 </td>
                 <td class="text-center">
                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#ModalDelete"

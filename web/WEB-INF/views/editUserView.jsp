@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,34 +13,66 @@
 <body>
 <jsp:include page="_header.jsp"/>
 <section class="container">
-    <h2>Редактировать филиал</h2>
-    <c:if test="${not empty filial}">
-        <form class="form-horizontal" method="POST" action="doEditFilial">
+    <h2>Редактировать пользователя</h2>
+    <c:if test="${not empty user}">
+        <form class="form-horizontal" method="POST" action="doEditUser">
             <div class="form-group">
-                <label for="code" class="col-sm-2 control-label">Код</label>
+                <label for="id" class="col-sm-2 control-label">ID</label>
                 <div class="col-sm-2">
-                    <input type="number" min="0" step="1" class="form-control" id="code" placeholder="Код"
-                           name="id" value="${filial.id}" readonly>
+                    <input type="number" min="0" step="1" class="form-control" id="id" placeholder="Код"
+                           name="id" value="${user.id}" readonly/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="sh_name" class="col-sm-2 control-label">Сокращение</label>
+                <label for="name" class="col-sm-2 control-label">Учетная запись</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" id="sh_name" placeholder="Сокращение"
-                           name="sh_name" value='${filial.sh_name}'>
+                    <input type="text" class="form-control" id="name" placeholder="Учетная запись"
+                           name="name" value='${user.name}'/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="pass_1" class="col-sm-2 control-label">Пароль</label>
+                <div class="col-sm-4">
+                    <input type="password" class="form-control" id="pass_1" placeholder="Пароль"
+                           name="pass_1" value='${user.password}'/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="name" class="col-sm-2 control-label">Наименование</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" id="name" placeholder="Наименование"
-                           name="name" value='${filial.name}'>
+                <label for="pass_2" class="col-sm-2 control-label">Подтверждение</label>
+                <div class="col-sm-4">
+                    <input type="password" class="form-control" id="pass_2" placeholder="Пароль"
+                           name="pass_2" value='${user.password}'/>
                 </div>
             </div>
             <div class="form-group">
+                <label for="role" class="col-sm-2 control-label">Роль</label>
+                <div class="col-sm-4">
+                    <select class="selectpicker form-control" id="role" title="Роль" name="role" data-live-search="true">
+                        <c:forEach items="${roles}" var="rl">
+                            <option value="${rl.id}">${rl.name}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="worker" class="col-sm-2 control-label">Сотрудник</label>
+                <div class="col-sm-4">
+                    <select class="selectpicker form-control" id="worker" title="Сотрудники" name="worker" data-live-search="true">
+                        <c:forEach items="${workers}" var="wrk">
+                            <option value="${wrk.id}">${wrk.surname} ${fn:substring(wrk.name,0,1)}.${fn:substring(wrk.patronymic,0,1)}.</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </div>
+
+            <div class=" form-group
+                                ">
                 <div class="col-sm-offset-2 col-sm-4">
                     <button type="submit" class="btn btn-info">Подтвердить</button>
-                    <a class="btn btn-default" href="${pageContext.request.contextPath}/filialList">Отмена</a>
+                    <a class="btn btn-default"
+                       href="${pageContext.request.contextPath}/userList">Отмена</a>
                 </div>
             </div>
         </form>
@@ -48,5 +81,6 @@
 <jsp:include page="_footer.jsp"/>
 <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap-select.js"></script>
 </body>
 </html>

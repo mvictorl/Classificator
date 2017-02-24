@@ -39,7 +39,7 @@ public class Worker {
 
     public void setDivision(Division division) { this.division = division; }
 
-    public int isUserExist() { return user_id; }
+    public int getUser_id() { return user_id; }
 
-    public void setUserExist(int user_id) { this.user_id = user_id; }
+    public void setUser_id(int user_id) { this.user_id = user_id; }
 }
