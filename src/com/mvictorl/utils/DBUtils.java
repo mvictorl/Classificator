@@ -204,6 +204,39 @@ public class DBUtils {
         pstm.executeUpdate();
     }
 
+    public static void updateUser(Connection conn, int idUser, String pass, int role, int worker) throws SQLException {
+        String sql = "UPDATE users SET userPassword=?, role_id=?, woker=? WHERE idUsers=? ";
+        PreparedStatement pstm = conn.prepareStatement(sql);
+
+        pstm.setString(1, pass);
+        pstm.setInt(2, role);
+        pstm.setInt(3, worker);
+        pstm.setInt(4, idUser);
+        pstm.executeUpdate();
+    }
+
+    public static void insertUser(Connection conn, User user) throws SQLException {
+        /*String sql = "INSERT INTO Product(Code, Name,Price) VALUES (?,?,?)";
+
+        PreparedStatement pstm = conn.prepareStatement(sql);
+
+        pstm.setString(1, product.getCode());
+        pstm.setString(2, product.getName());
+        pstm.setFloat(3, product.getPrice());
+
+        pstm.executeUpdate();*/
+    }
+
+    public static void deleteUser(Connection conn, int idUser) throws SQLException {
+        /*String sql = "DELETE FROM Product WHERE Code = ? ";
+
+        PreparedStatement pstm = conn.prepareStatement(sql);
+
+        pstm.setString(1, code);
+
+        pstm.executeUpdate();*/
+    }
+
     /*~~~~~ ROLE database tools ~~~~*/
     public static List<Role> queryRoles(Connection conn, int lvl) throws SQLException {
         String sql =    "SELECT idRole, nameRole FROM roles WHERE idRole >= ? ORDER BY idRole";
@@ -363,7 +396,7 @@ public class DBUtils {
         pstm.executeUpdate();
     }
 
-    public static void deleteProduct(Connection conn, int id) throws SQLException {
+    public static void deleteFilial(Connection conn, int id) throws SQLException {
         String sql = "DELETE FROM filials WHERE idFilial=? ";
         PreparedStatement pstm = conn.prepareStatement(sql);
         pstm.setInt(1, id);

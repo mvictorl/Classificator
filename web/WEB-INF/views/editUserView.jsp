@@ -48,9 +48,17 @@
             <div class="form-group">
                 <label for="role" class="col-sm-2 control-label">Роль</label>
                 <div class="col-sm-4">
-                    <select class="selectpicker form-control" id="role" title="Роль" name="role" data-live-search="true">
+                    <select class="selectpicker form-control" id="role" title="Роль" name="role"
+                            data-live-search="true">
                         <c:forEach items="${roles}" var="rl">
-                            <option value="${rl.id}">${rl.name}</option>
+                            <c:choose>
+                                <c:when test="${rl.id eq user.role.id}">
+                                    <option value="${rl.id}" selected>${rl.name}</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="${rl.id}">${rl.name}</option>
+                                </c:otherwise>
+                            </c:choose>
                         </c:forEach>
                     </select>
                 </div>
@@ -59,20 +67,26 @@
             <div class="form-group">
                 <label for="worker" class="col-sm-2 control-label">Сотрудник</label>
                 <div class="col-sm-4">
-                    <select class="selectpicker form-control" id="worker" title="Сотрудники" name="worker" data-live-search="true">
+                    <select class="selectpicker form-control" id="worker" title="Сотрудники" name="worker"
+                            data-live-search="true">
                         <c:forEach items="${workers}" var="wrk">
-                            <option value="${wrk.id}">${wrk.surname} ${fn:substring(wrk.name,0,1)}.${fn:substring(wrk.patronymic,0,1)}.</option>
+                            <c:choose>
+                                <c:when test="${wrk.id eq user.worker.id}">
+                                    <option selected value="${wrk.id}">${wrk.surname} ${fn:substring(wrk.name,0,1)}.${fn:substring(wrk.patronymic,0,1)}.</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="${wrk.id}">${wrk.surname} ${fn:substring(wrk.name,0,1)}.${fn:substring(wrk.patronymic,0,1)}.</option>
+                                </c:otherwise>
+                            </c:choose>
                         </c:forEach>
                     </select>
                 </div>
             </div>
 
-            <div class=" form-group
-                                ">
+            <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-4">
                     <button type="submit" class="btn btn-info">Подтвердить</button>
-                    <a class="btn btn-default"
-                       href="${pageContext.request.contextPath}/userList">Отмена</a>
+                    <a class="btn btn-default" href="${pageContext.request.contextPath}/userList">Отмена</a>
                 </div>
             </div>
         </form>

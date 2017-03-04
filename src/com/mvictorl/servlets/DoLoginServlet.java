@@ -75,7 +75,6 @@ public class DoLoginServlet extends HttpServlet {
         // Store user information in Session
         // And redirect to userInfo page.
         else {
-
             HttpSession session = request.getSession();
             MyUtils.storeLoginedUser(session, user);
 

@@ -1,18 +1,11 @@
 package com.mvictorl.servlets;
 
-import com.mvictorl.beans.Filial;
-import com.mvictorl.utils.DBUtils;
-import com.mvictorl.utils.MyUtils;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 @WebServlet(urlPatterns = {"/doEditUser"})
 public class DoEditUserServlet extends HttpServlet {
@@ -25,11 +18,14 @@ public class DoEditUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Connection conn = MyUtils.getStoredConnection(request);
+        /*Connection conn = MyUtils.getStoredConnection(request);
 
-        int id = Integer.parseInt(request.getParameter("id"));
-        String sh_name = (String) request.getParameter("sh_name");
-        String name = (String) request.getParameter("name");
+        int user_id = Integer.parseInt(request.getParameter("id"));
+        String user_name = (String) request.getParameter("name");
+        String pass_1 = (String) request.getParameter("pass_1");
+        String pass_2 = (String) request.getParameter("pass_2");
+        int role_id = Integer.parseInt(request.getParameter("role"));
+        int worker_id = Integer.parseInt(request.getParameter("worker"));
 
         Filial filial = new Filial(id, name, sh_name);
         Filial tmp = null;
@@ -57,7 +53,7 @@ public class DoEditUserServlet extends HttpServlet {
         // Redirect to the product listing page.
         else {
             response.sendRedirect(request.getContextPath() + "/filialList");
-        }
+        }*/
     }
 
     @Override

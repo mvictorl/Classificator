@@ -31,7 +31,7 @@ public class DeleteUserServlet extends HttpServlet {
         String errorString = null;
 
         try {
-            DBUtils.deleteProduct(conn, id);
+            DBUtils.deleteUser(conn, id);
         } catch (SQLException e) {
             e.printStackTrace();
             errorString = e.getMessage();
@@ -44,14 +44,14 @@ public class DeleteUserServlet extends HttpServlet {
             request.setAttribute("errorString", errorString);
             //
             RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("filialList");
+                    .getRequestDispatcher("userList");
             dispatcher.forward(request, response);
         }
 
         // If everything nice.
-        // Redirect to the product listing page.
+        // Redirect to the user listing page.
         else {
-            response.sendRedirect(request.getContextPath() + "/filialList");
+            response.sendRedirect(request.getContextPath() + "/userList");
         }
     }
 
