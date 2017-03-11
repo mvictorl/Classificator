@@ -78,6 +78,14 @@ public class DoLoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             MyUtils.storeLoginedUser(session, user);
 
+            if (user.getWorker() != null){
+                worker = user.getWorker();
+                MyUtils.storeActiveWorker(session, worker);
+            }
+            else {
+                MyUtils.removeActiveWorker(session);
+            }
+
             // If user checked "Remember me".
             if (remember) {
                 MyUtils.storeUserCookie(response, user);

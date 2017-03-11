@@ -17,8 +17,8 @@
     <p>${accessErrorString}</p>
     <br>
     <div class="row">
-        <a class="btn btn-default" href="${pageContext.request.contextPath}/">На главную</a>
-        <a class="btn btn-default" href="${pageContext.request.contextPath}/login">Вход</a>
+        <a class="btn btn-info" href="${pageContext.request.contextPath}/">На главную</a>
+        <a class="btn btn-info" href="${pageContext.request.contextPath}/login">Вход</a>
     </div>
     <jsp:include page="_footer.jsp"></jsp:include>
     <script src="${pageContext.request.contextPath}/js/jquery.js"></script>

@@ -39,15 +39,22 @@ public class MyUtils {
     }
 
     // Store Active Worker in Session.
-    public static void storeActiveWoker(HttpSession session, Worker activeWorker) {
-        // On the JSP can access ${loginedUser}
-        session.setAttribute("activeWoker", activeWorker);
+    public static void storeActiveWorker(HttpSession session, Worker activeWorker) {
+        // On the JSP can access ${activeWorker}
+        session.setAttribute("activeWorker", activeWorker);
     }
 
     // Get the Active Worker information stored in the session.
-    public static Worker getActiveWoker(HttpSession session) {
+    public static Worker getActiveWorker(HttpSession session) {
         Worker activeWorker = (Worker) session.getAttribute("activeWorker");
         return activeWorker;
+    }
+
+    // Get the Active Worker information stored in the session.
+    public static void removeActiveWorker(HttpSession session) {
+        if (!session.getAttribute("activeWorker").equals(null)) {
+            session.removeAttribute("activeWorker");
+        }
     }
 
     // Store info in Cookie

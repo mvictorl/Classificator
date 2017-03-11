@@ -299,7 +299,7 @@ public class DBUtils {
 
     public static List<Worker> queryWorkers(Connection conn) throws SQLException {
         String sql = "SELECT e.idEmployees, e.surnameEmployee, e.nameEmployee, e.patronymicEmployee, " +
-                    "e.parent_id, e.user_exist, d.idDivision, d.nameDivision, d.filial_id " +
+                    "e.parent_id, d.idDivision, d.nameDivision, d.filial_id, d.chif, d.mediator " +
                     "FROM employees e " +
                     "LEFT OUTER JOIN division d ON e.division_id = d.idDivision " +
                     "ORDER BY e.surnameEmployee ";
@@ -314,9 +314,13 @@ public class DBUtils {
             int idDivision = rs.getInt("idDivision");
             String nameDivision = rs.getString("nameDivision");
             int idFilial = rs.getInt("filial_id");
+            int chif = rs.getInt("chif");
+            int mediator = rs.getInt("mediator");
             division.setId(idDivision);
             division.setName(nameDivision);
             division.setFilial_id(idFilial);
+            division.setChif(chif);
+            division.setMediator(mediator);
 
             Worker worker = new Worker();
             int idWorker = rs.getInt("idEmployees");
@@ -325,16 +329,12 @@ public class DBUtils {
             String patronymicWorker = rs.getString("patronymicEmployee");
             int parent = rs.getInt("parent_id");
 
-            int user_id = -1;
-            if(rs.getString("user_exist").equals("Y")) {
-                user_id = getUserIDByWorker(conn, idWorker);
-            }
             worker.setId(idWorker);
             worker.setSurname(surnameWorker);
             worker.setName(nameWorker);
             worker.setPatronymic(patronymicWorker);
             worker.setDivision(division);
-            worker.setUser_id(user_id);
+            //worker.setUser_id(user_id);
             list.add(worker);
         }
         return list;
@@ -342,7 +342,7 @@ public class DBUtils {
 
     /*~~~~~ FILIAL database tools ~~~~*/
     public static List<Filial> queryFilial(Connection conn) throws SQLException {
-        String sql = "SELECT a.idFilial, a.nameFilial, a.cutnameFilial FROM filials a ORDER BY a.idFilial";
+        String sql = "SELECT f.idFilial, f.nameFilial, f.cutnameFilial FROM filials f ORDER BY f.idFilial ";
 
         PreparedStatement pstm = conn.prepareStatement(sql);
 
@@ -357,6 +357,31 @@ public class DBUtils {
             filial.setName(name);
             filial.setSh_name(sh_name);
             list.add(filial);
+        }
+        return list;
+    }
+
+    public static List<Filial> queryAvailableFilials(Connection conn, int worker) throws SQLException {
+        String sql = "SELECT f.idFilial, f.nameFilial, f.cutnameFilial " +
+                "FROM filials f " +
+                "LEFT OUTER JOIN division d ON f.idFilial = d.filial_id " +
+                "LEFT OUTER JOIN employees e ON d.mediator = e.idEmployees " +
+                "WHERE e.idEmployees=?";
+
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setString(1, Integer.toString(worker));
+        ResultSet rs = pstm.executeQuery();
+
+        List<Filial> list = new ArrayList<>();
+        while (rs.next()) {
+            int id = rs.getInt("idFilial");
+            String nameF = rs.getString("nameFilial");
+            String cutname = rs.getString("cutnameFilial");
+            Filial fil = new Filial();
+            fil.setId(id);
+            fil.setName(nameF);
+            fil.setSh_name(cutname);
+            list.add(fil);
         }
         return list;
     }
@@ -404,4 +429,54 @@ public class DBUtils {
         pstm.executeUpdate();
     }
 
+    /*~~~~~ DIVISION database tools ~~~~*/
+    public static List<Division> queryDivisions(Connection conn, int filial) throws SQLException {
+        String sql = "SELECT d.idDivision, d.nameDivision, d.chif, d.mediator FROM division d " +
+                    "WHERE d.filial_id=? ";
+
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setInt(1, filial);
+
+        ResultSet rs = pstm.executeQuery();
+        List<Division> list = new ArrayList<>();
+        while (rs.next()) {
+            int id = rs.getInt("idDivision");
+            String name = rs.getString("nameDivision");
+            int chif = rs.getInt("chif");
+            int mediator = rs.getInt("mediator");
+            Division division = new Division();
+            division.setId(id);
+            division.setName(name);
+            division.setFilial_id(filial);
+            division.setChif(chif);
+            division.setMediator(mediator);
+            list.add(division);
+        }
+        return list;
+    }
+
+    public static List<Division> queryDivisions(Connection conn, int filial, int mediator) throws SQLException {
+        String sql = "SELECT d.idDivision, d.nameDivision, d.chif FROM division d " +
+                "WHERE d.filial_id=? AND d.mediator=?";
+
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setInt(1, filial);
+        pstm.setInt(2, mediator);
+
+        ResultSet rs = pstm.executeQuery();
+        List<Division> list = new ArrayList<>();
+        while (rs.next()) {
+            int id = rs.getInt("idDivision");
+            String name = rs.getString("nameDivision");
+            int chif = rs.getInt("chif");
+            Division division = new Division();
+            division.setId(id);
+            division.setName(name);
+            division.setFilial_id(filial);
+            division.setChif(chif);
+            division.setMediator(mediator);
+            list.add(division);
+        }
+        return list;
+    }
 }

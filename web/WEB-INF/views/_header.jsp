@@ -36,7 +36,7 @@
                                             <li><a href="${pageContext.request.contextPath}/filialList">Филиалы</a></li>
                                         </c:if>
                                         <c:if test="${(sessionScope.loginedUser.role.id <= 1)}">
-                                            <li><a href="${pageContext.request.contextPath}/subdivisionList">Подразделения</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/divisionList">Подразделения</a></li>
                                             <li><a href="${pageContext.request.contextPath}/userList">Пользователи</a></li>
                                         </c:if>
                                         <li><a href="${pageContext.request.contextPath}/employeeList">Сотрудники</a>
