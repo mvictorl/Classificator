@@ -90,16 +90,10 @@ public class DivisionListServlet extends HttpServlet {
                     e.printStackTrace();
                     errorString = e.getMessage();
                 }
-                if (request.getParameterMap().containsKey("active_division")) {
-                    int active_division = Integer.parseInt(request.getParameter("active_division").toString());
-                    request.setAttribute("active_division", active_division);
-                }
                 request.setAttribute("active_filial", active_filial);
                 request.setAttribute("divisions", dvs);
             }
-
             request.setAttribute("errorString", errorString);
-
             // Forward to /WEB-INF/views/productListView.jsp
             RequestDispatcher dispatcher = request.getServletContext()
                     .getRequestDispatcher("/WEB-INF/views/divisionListView.jsp");

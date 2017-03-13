@@ -1,11 +1,20 @@
 package com.mvictorl.servlets;
 
+import com.mvictorl.beans.Division;
+import com.mvictorl.beans.User;
+import com.mvictorl.utils.DBUtils;
+import com.mvictorl.utils.MyUtils;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 @WebServlet(urlPatterns = { "/deleteDivision" })
 public class DeleteDivisionServlet extends HttpServlet {
@@ -18,7 +27,6 @@ public class DeleteDivisionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-/*
         HttpSession session = request.getSession();
 
         // Check User has logged on
@@ -45,9 +53,11 @@ public class DeleteDivisionServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
 
         String errorString = null;
+        Division tmp = new Division();
 
         try {
-            DBUtils.deleteFilial(conn, id);
+            tmp = DBUtils.getDivision(conn, id);
+            DBUtils.deleteDivision(conn, id);
         } catch (SQLException e) {
             e.printStackTrace();
             errorString = e.getMessage();
@@ -58,18 +68,16 @@ public class DeleteDivisionServlet extends HttpServlet {
 
             // Store the information in the request attribute, before forward to views.
             request.setAttribute("errorString", errorString);
-            //
             RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("filialList");
+                    .getRequestDispatcher("divisionList");
             dispatcher.forward(request, response);
         }
 
         // If everything nice.
         // Redirect to the product listing page.
         else {
-            response.sendRedirect(request.getContextPath() + "/filialList");
+            response.sendRedirect(request.getContextPath() + "/divisionList?active_filial=" + tmp.getFilial_id());
         }
-*/
     }
 
     @Override

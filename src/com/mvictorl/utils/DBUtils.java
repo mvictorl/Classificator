@@ -479,4 +479,52 @@ public class DBUtils {
         }
         return list;
     }
+
+    public static Division getDivision(Connection conn, int id) throws SQLException {
+        String sql = "SELECT d.nameDivision, d.filial_id, d.chif, d.mediator " +
+                "FROM division d " +
+                "WHERE d.idDivision=?";
+
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setInt(1, id);
+        ResultSet rs = pstm.executeQuery();
+
+        if (rs.next()) {
+            Division division = new Division();
+            int idDivision = id;
+            String nameDivision = rs.getString("nameDivision");
+            int filial_id = rs.getInt("filial_id");
+            int chif = rs.getInt("chif");
+            int mediator = rs.getInt("mediator");
+            division.setId(idDivision);
+            division.setName(nameDivision);
+            division.setFilial_id(filial_id);
+            if (rs.getObject("chif") != null) {
+                division.setChif(rs.getInt("chif"));
+            }
+            if (rs.getObject("mediator") != null) {
+                division.setMediator(rs.getInt("mediator"));
+            }
+            return division;
+        }
+        return null;
+    }
+
+    public static void insertDivision(Connection conn, Division division) throws SQLException {
+        String sql = "INSERT INTO division(nameDivision, filial_id) VALUES (?,?)";
+        PreparedStatement pstm = conn.prepareStatement(sql);
+
+        pstm.setString(1, division.getName());
+        pstm.setInt(2,division.getFilial_id());
+
+        pstm.executeUpdate();
+    }
+
+    public static void deleteDivision(Connection conn, int id) throws SQLException {
+        String sql = "DELETE FROM division WHERE idDivision=? ";
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setInt(1, id);
+
+        pstm.executeUpdate();
+    }
 }
