@@ -260,7 +260,7 @@ public class DBUtils {
     /*~~~~~ EMPLOYEE (WORKER) database tools ~~~~*/
     public static Worker findWoker(Connection conn, int id) throws SQLException {
         String sql = "SELECT e.surnameEmployee, e.nameEmployee, e.patronymicEmployee, " +
-                "e.parent_id, e.user_exist, d.idDivision, d.nameDivision, d.filial_id " +
+                "e.user_exist, d.idDivision, d.nameDivision, d.filial_id " +
                 "FROM employees e LEFT OUTER JOIN division d " +
                 "ON e.division_id = d.idDivision " +
                 "WHERE e.idEmployees = ?";
@@ -273,7 +273,6 @@ public class DBUtils {
             String surname = rs.getString("surnameEmployee");
             String name = rs.getString("nameEmployee");
             String patronymic = rs.getString("patronymicEmployee");
-            int parent = rs.getInt("parent_id");
             int idDivision = rs.getInt("idDivision");
             boolean user_exist = (rs.getString("user_exist") == "Y");
             String nameDivision = rs.getString("nameDivision");
@@ -289,7 +288,6 @@ public class DBUtils {
             worker.setSurname(surname);
             worker.setName(name);
             worker.setPatronymic(patronymic);
-            worker.setParent(parent);
             worker.setDivision(division);
 
             return worker;
@@ -299,7 +297,7 @@ public class DBUtils {
 
     public static List<Worker> queryWorkers(Connection conn) throws SQLException {
         String sql = "SELECT e.idEmployees, e.surnameEmployee, e.nameEmployee, e.patronymicEmployee, " +
-                    "e.parent_id, d.idDivision, d.nameDivision, d.filial_id, d.chif, d.mediator " +
+                    "d.idDivision, d.nameDivision, d.filial_id, d.chif, d.mediator " +
                     "FROM employees e " +
                     "LEFT OUTER JOIN division d ON e.division_id = d.idDivision " +
                     "ORDER BY e.surnameEmployee ";
@@ -327,7 +325,6 @@ public class DBUtils {
             String surnameWorker = rs.getString("surnameEmployee");
             String nameWorker = rs.getString("nameEmployee");
             String patronymicWorker = rs.getString("patronymicEmployee");
-            int parent = rs.getInt("parent_id");
 
             worker.setId(idWorker);
             worker.setSurname(surnameWorker);
@@ -338,6 +335,54 @@ public class DBUtils {
             list.add(worker);
         }
         return list;
+    }
+
+    public static List<Worker> queryWorkerByFilial(Connection conn, int filial) throws SQLException {
+        String sql = "SELECT e.idEmployees, e.surnameEmployee, e.nameEmployee, e.patronymicEmployee, " +
+                "d.idDivision, d.nameDivision, d.filial_id, d.chif, d.mediator " +
+                "FROM employees e " +
+                "LEFT OUTER JOIN division d ON e.division_id = d.idDivision " +
+                "WHERE d.filial_id=? " +
+                "ORDER BY e.surnameEmployee ";
+
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setInt(1, filial);
+        ResultSet rs = pstm.executeQuery();
+        List<Worker> list = new ArrayList<>();
+
+        while (rs.next()) {
+            Division division = new Division();
+            int idDivision = rs.getInt("idDivision");
+            String nameDivision = rs.getString("nameDivision");
+            int idFilial = rs.getInt("filial_id");
+            int chif = rs.getInt("chif");
+            int mediator = rs.getInt("mediator");
+
+            division.setId(idDivision);
+            division.setName(nameDivision);
+            division.setFilial_id(idFilial);
+            division.setChif(chif);
+            division.setMediator(mediator);
+
+            Worker worker = new Worker();
+            int idWorker = rs.getInt("idEmployees");
+            String surnameWorker = rs.getString("surnameEmployee");
+            String nameWorker = rs.getString("nameEmployee");
+            String patronymicWorker = rs.getString("patronymicEmployee");
+
+            worker.setId(idWorker);
+            worker.setSurname(surnameWorker);
+            worker.setName(nameWorker);
+            worker.setPatronymic(patronymicWorker);
+            worker.setDivision(division);
+            //worker.setUser_id(user_id);
+            list.add(worker);
+        }
+        return list;
+    }
+
+    public static List<Worker> queryWorkerByDivision(Connection conn, int division) throws SQLException {
+        return null;
     }
 
     /*~~~~~ FILIAL database tools ~~~~*/

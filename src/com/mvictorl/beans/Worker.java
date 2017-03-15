@@ -5,12 +5,10 @@ public class Worker {
     private String surname;
     private String name;
     private String patronymic;
-    private int parent;
     private Division division;
     private int user_id;
 
     public Worker() {
-        parent = 0;
         division = null;
         user_id = -1;
     }
@@ -30,10 +28,6 @@ public class Worker {
     public String getPatronymic() { return patronymic; }
 
     public void setPatronymic(String patronymic) { this.patronymic = patronymic; }
-
-    public int getParent() { return parent; }
-
-    public void setParent(int parent) { this.parent = parent; }
 
     public Division getDivision() { return division; }
 

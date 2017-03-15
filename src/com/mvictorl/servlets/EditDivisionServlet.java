@@ -1,11 +1,23 @@
 package com.mvictorl.servlets;
 
+import com.mvictorl.beans.Division;
+import com.mvictorl.beans.User;
+import com.mvictorl.beans.Worker;
+import com.mvictorl.utils.DBUtils;
+import com.mvictorl.utils.MyUtils;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(urlPatterns = { "/editDivision" })
 public class EditDivisionServlet extends HttpServlet {
@@ -18,7 +30,6 @@ public class EditDivisionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-/*
         HttpSession session = request.getSession();
 
         // Check User has logged on
@@ -44,11 +55,13 @@ public class EditDivisionServlet extends HttpServlet {
 
         int id = Integer.parseInt(request.getParameter("id"));
 
-        Filial filial = null;
+        Division division = null;
+        List<Worker> workers = new ArrayList<>();
         String errorString = null;
 
         try {
-            filial = DBUtils.findFilial(conn, id);
+            division = DBUtils.getDivision(conn, id);
+            workers = DBUtils.queryWorkerByFilial(conn, division.getFilial_id());
         } catch (SQLException e) {
             e.printStackTrace();
             errorString = e.getMessage();
@@ -57,19 +70,19 @@ public class EditDivisionServlet extends HttpServlet {
         // If no error.
         // The filial does not exist to edit.
         // Redirect to productList page.
-        if (errorString != null && filial == null) {
-            response.sendRedirect(request.getServletPath() + "/filialList");
+        if (errorString != null && division == null) {
+            response.sendRedirect(request.getServletPath() + "/divisionList");
             return;
         }
 
         // Store errorString in request attribute, before forward to views.
         request.setAttribute("errorString", errorString);
-        request.setAttribute("filial", filial);
+        request.setAttribute("division", division);
+        request.setAttribute("workers", workers);
 
         RequestDispatcher dispatcher = request.getServletContext()
-                .getRequestDispatcher("/WEB-INF/views/editFilialView.jsp");
+                .getRequestDispatcher("/WEB-INF/views/editDivisionView.jsp");
         dispatcher.forward(request, response);
-*/
     }
 
     @Override
