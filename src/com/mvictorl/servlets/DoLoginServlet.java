@@ -66,8 +66,7 @@ public class DoLoginServlet extends HttpServlet {
             request.setAttribute("user", user);
 
             // Forward to /WEB-INF/views/login.jsp
-            RequestDispatcher dispatcher //
-                    = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
 
             dispatcher.forward(request, response);
         }
@@ -95,7 +94,7 @@ public class DoLoginServlet extends HttpServlet {
                 MyUtils.deleteUserCookie(response);
             }
             // Redirect to userInfo page.
-            response.sendRedirect(request.getContextPath() + "/userInfo");
+            response.sendRedirect(request.getContextPath() + "/home");
         }
     }
 

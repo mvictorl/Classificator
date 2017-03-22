@@ -87,5 +87,4 @@ public class MyUtils {
         cookieUserName.setMaxAge(0);
         response.addCookie(cookieUserName);
     }
-
 }

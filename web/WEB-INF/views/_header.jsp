@@ -25,50 +25,54 @@
                                     <span class="glyphicon glyphicon-home"></span>
                                     <span class="sr-only">(current)</span></a>
                                 </li>
-                                <li class="page_first"><a href="${pageContext.request.contextPath}/productList">product
-                                    list</a></li>
-                                <c:if test="${(sessionScope.loginedUser.role.id < 2)}">
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                       aria-haspopup="true" aria-expanded="false">ввод данных</a>
-                                    <ul class="dropdown-menu">
-                                        <c:if test="${(sessionScope.loginedUser.role.id == 0)}">
-                                            <li><a href="${pageContext.request.contextPath}/filialList">Филиалы</a></li>
-                                        </c:if>
-                                        <c:if test="${(sessionScope.loginedUser.role.id <= 1)}">
-                                            <li><a href="${pageContext.request.contextPath}/divisionList">Подразделения</a></li>
-                                            <li><a href="${pageContext.request.contextPath}/userList">Пользователи</a></li>
-                                        </c:if>
-                                        <li><a href="${pageContext.request.contextPath}/employeeList">Сотрудники</a>
-                                        </li>
-                                        <li><a href="${pageContext.request.contextPath}/systemList">АИС</a></li>
-                                        <li><a href="${pageContext.request.contextPath}/hardwareList">СВТ</a></li>
-                                        <li><a href="${pageContext.request.contextPath}/softwareList">ПО</a></li>
-                                    </ul>
-                                </li>
+                                <c:if test="${(sessionScope.loginedUser.role.id > 0)}">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                           aria-haspopup="true" aria-expanded="false">ввод данных</a>
+                                        <ul class="dropdown-menu">
+                                            <c:if test="${(sessionScope.loginedUser.role.id == 1)}">
+                                                <li><a href="${pageContext.request.contextPath}/filialList">Филиалы</a>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${(sessionScope.loginedUser.role.id == 1) or (sessionScope.loginedUser.role.id == 2)}">
+                                                <li><a href="${pageContext.request.contextPath}/divisionList">Подразделения</a>
+                                                </li>
+                                                <li>
+                                                    <a href="${pageContext.request.contextPath}/userList">Пользователи</a>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${(sessionScope.loginedUser.role.id > 0)}">
+                                                <li><a href="${pageContext.request.contextPath}/employeeList">Сотрудники</a></li>
+                                                <li><a href="${pageContext.request.contextPath}/systemList">АИС</a></li>
+                                                <li><a href="${pageContext.request.contextPath}/hardwareList">СВТ</a></li>
+                                                <li><a href="${pageContext.request.contextPath}/softwareList">ПО</a></li>
+                                            </c:if>
+                                        </ul>
+                                    </li>
                                 </c:if>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
                                 <c:choose>
                                     <c:when test="${sessionScope.loginedUser == null}">
-                                <%--<% if (session.getAttribute("loginedUser") == null) { %>--%>
-                                <li><a href="${pageContext.request.contextPath}/login" data-toggle="tooltip"
-                                       data-placement="bottom" data-delay="1" title="Вход">
-                                    <span class="glyphicon glyphicon-log-in"></span>
-                                </a></li>
+                                        <%--<% if (session.getAttribute("loginedUser") == null) { %>--%>
+                                        <li><a href="${pageContext.request.contextPath}/login" data-toggle="tooltip"
+                                               data-placement="bottom" data-delay="1" title="Вход">
+                                            <span class="glyphicon glyphicon-log-in"></span>
+                                        </a></li>
                                     </c:when>
                                     <c:when test="${sessionScope.loginedUser != null}">
-                                <li class="page_second"><a href="${pageContext.request.contextPath}/userInfo">
-                                    <b>${sessionScope.loginedUser.name}</b></a><a href="/doLogoff" data-toggle="tooltip"
-                                                                data-delay="1"  data-placement="bottom" title="Выход">
-                                    <span class="glyphicon glyphicon-log-out"></span></a>
-                                </li>
+                                        <li class="page_second"><a href="${pageContext.request.contextPath}/userInfo">
+                                            <b>${sessionScope.loginedUser.name}</b></a><a href="/doLogoff" data-toggle="tooltip" data-delay="1" data-placement="bottom" title="Выход">
+                                            <span class="glyphicon glyphicon-log-out"></span></a>
+                                        </li>
                                     </c:when>
                                 </c:choose>
                             </ul>
                         </section>
-                    </div> <%--container-fluid--%>
-                </nav> <%--container-fluid--%>
+                    </div>
+                    <%--container-fluid--%>
+                </nav>
+                <%--container-fluid--%>
             </header>
         </div> <!-- column -->
     </div> <!-- content -->

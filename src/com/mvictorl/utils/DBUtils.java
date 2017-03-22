@@ -12,14 +12,14 @@ import java.util.List;
 public class DBUtils {
     /*~~~~~ USER database tools ~~~~*/
     public static User findUser(Connection conn, String userName, String password) throws SQLException {
-        String sql =    "SELECT u.idUsers, r.idRole, r.nameRole, e.idEmployees, e.surnameEmployee, e.nameEmployee, " +
-                        "e.patronymicEmployee, d.idDivision, d.nameDivision, d.filial_id " +
-                        "FROM users u " +
-                        "LEFT OUTER JOIN roles r ON u.role_id = r.idRole " +
-                        "LEFT OUTER JOIN employees e ON u.woker = e.idEmployees " +
-                        "LEFT OUTER JOIN division d ON e.division_id = d.idDivision " +
-                        "LEFT OUTER JOIN filials f ON d.filial_id = f.idFilial " +
-                        "WHERE u.nameUser = ? AND u.userPassword = ?";
+        String sql = "SELECT u.idUsers, r.idRole, r.nameRole, e.idEmployees, e.surnameEmployee, e.nameEmployee, " +
+                "e.patronymicEmployee, d.idDivision, d.nameDivision, d.filial_id " +
+                "FROM users u " +
+                "LEFT OUTER JOIN roles r ON u.role_id = r.idRole " +
+                "LEFT OUTER JOIN employees e ON u.woker = e.idEmployees " +
+                "LEFT OUTER JOIN division d ON e.division_id = d.idDivision " +
+                "LEFT OUTER JOIN filials f ON d.filial_id = f.idFilial " +
+                "WHERE u.nameUser = ? AND u.userPassword = ?";
 /*
         String sql = "SELECT u.idUsers, u.role_id, u.woker, r.idRole, r.nameRole " +
                     "FROM users u LEFT OUTER JOIN roles r " +
@@ -71,14 +71,14 @@ public class DBUtils {
     }
 
     public static User findUser(Connection conn, String userName) throws SQLException {
-        String sql =    "SELECT u.idUsers, u.userPassword, r.idRole, r.nameRole, e.idEmployees, e.surnameEmployee, " +
-                        "e.nameEmployee, e.patronymicEmployee, d.idDivision, d.nameDivision, d.filial_id " +
-                        "FROM users u " +
-                        "LEFT OUTER JOIN roles r ON u.role_id = r.idRole " +
-                        "LEFT OUTER JOIN employees e ON u.woker = e.idEmployees " +
-                        "LEFT OUTER JOIN division d ON e.division_id = d.idDivision " +
-                        "LEFT OUTER JOIN filials f ON d.filial_id = f.idFilial " +
-                        "WHERE u.nameUser = ?";
+        String sql = "SELECT u.idUsers, u.userPassword, r.idRole, r.nameRole, e.idEmployees, e.surnameEmployee, " +
+                "e.nameEmployee, e.patronymicEmployee, d.idDivision, d.nameDivision, d.filial_id " +
+                "FROM users u " +
+                "LEFT OUTER JOIN roles r ON u.role_id = r.idRole " +
+                "LEFT OUTER JOIN employees e ON u.woker = e.idEmployees " +
+                "LEFT OUTER JOIN division d ON e.division_id = d.idDivision " +
+                "LEFT OUTER JOIN filials f ON d.filial_id = f.idFilial " +
+                "WHERE u.nameUser = ?";
 
         PreparedStatement pstm = conn.prepareStatement(sql);
         pstm.setString(1, userName);
@@ -124,9 +124,9 @@ public class DBUtils {
     }
 
     public static int getUserIDByWorker(Connection conn, int idWorker) throws SQLException {
-        String sql =    "SELECT u.idUser FROM users u " +
-                        "LEFT OUTER JOIN employees e ON u.woker = e.idEmployees " +
-                        "WHERE e.idEmployees = ?";
+        String sql = "SELECT u.idUser FROM users u " +
+                "LEFT OUTER JOIN employees e ON u.woker = e.idEmployees " +
+                "WHERE e.idEmployees = ?";
 
         PreparedStatement pstm = conn.prepareStatement(sql);
         pstm.setInt(1, idWorker);
@@ -140,7 +140,7 @@ public class DBUtils {
     }
 
     public static List<User> queryUsers(Connection conn, int lvl) throws SQLException {
-        String sql =    "SELECT u.idUsers, u.nameUser, u.userPassword, r.idRole, r.nameRole, e.idEmployees, " +
+        String sql = "SELECT u.idUsers, u.nameUser, u.userPassword, r.idRole, r.nameRole, e.idEmployees, " +
                 "e.surnameEmployee, e.nameEmployee, e.patronymicEmployee, d.idDivision, d.nameDivision, d.filial_id " +
                 "FROM users u " +
                 "LEFT OUTER JOIN roles r ON u.role_id = r.idRole " +
@@ -239,7 +239,7 @@ public class DBUtils {
 
     /*~~~~~ ROLE database tools ~~~~*/
     public static List<Role> queryRoles(Connection conn, int lvl) throws SQLException {
-        String sql =    "SELECT idRole, nameRole FROM roles WHERE idRole >= ? ORDER BY idRole";
+        String sql = "SELECT idRole, nameRole FROM roles WHERE idRole >= ? ORDER BY idRole";
 
         PreparedStatement pstm = conn.prepareStatement(sql);
         pstm.setInt(1, lvl);
@@ -297,10 +297,10 @@ public class DBUtils {
 
     public static List<Worker> queryWorkers(Connection conn) throws SQLException {
         String sql = "SELECT e.idEmployees, e.surnameEmployee, e.nameEmployee, e.patronymicEmployee, " +
-                    "d.idDivision, d.nameDivision, d.filial_id, d.chif, d.mediator " +
-                    "FROM employees e " +
-                    "LEFT OUTER JOIN division d ON e.division_id = d.idDivision " +
-                    "ORDER BY e.surnameEmployee ";
+                "d.idDivision, d.nameDivision, d.filial_id, d.chif, d.mediator " +
+                "FROM employees e " +
+                "LEFT OUTER JOIN division d ON e.division_id = d.idDivision " +
+                "ORDER BY e.surnameEmployee ";
 
         PreparedStatement pstm = conn.prepareStatement(sql);
 
@@ -477,7 +477,7 @@ public class DBUtils {
     /*~~~~~ DIVISION database tools ~~~~*/
     public static List<Division> queryDivisions(Connection conn, int filial) throws SQLException {
         String sql = "SELECT d.idDivision, d.nameDivision, d.chif, d.mediator FROM division d " +
-                    "WHERE d.filial_id=? ";
+                "WHERE d.filial_id=? ";
 
         PreparedStatement pstm = conn.prepareStatement(sql);
         pstm.setInt(1, filial);
@@ -560,7 +560,7 @@ public class DBUtils {
         PreparedStatement pstm = conn.prepareStatement(sql);
 
         pstm.setString(1, division.getName());
-        pstm.setInt(2,division.getFilial_id());
+        pstm.setInt(2, division.getFilial_id());
 
         pstm.executeUpdate();
     }
@@ -571,5 +571,44 @@ public class DBUtils {
         pstm.setInt(1, id);
 
         pstm.executeUpdate();
+    }
+
+    /*~~~~~ DIVISION database tools ~~~~*/
+/*
+    public static boolean hasRolesByJsp(Connection conn, String jsp, int role) throws SQLException {
+        String sql = "SELECT a.name, a.access_role FROM access a " +
+                "WHERE a.name=? AND a.access_role=? ";
+
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setString(1, jsp);
+
+        ResultSet rs = pstm.executeQuery();
+
+        if (rs.next())
+            return true;
+        else
+            return false;
+    }
+*/
+
+    public static List<Access> queryAccess(Connection conn) throws SQLException {
+        String sql = "SELECT name, access_mask, editable FROM access ";
+
+        PreparedStatement pstm = conn.prepareStatement(sql);
+
+        ResultSet rs = pstm.executeQuery();
+        List<Access> list = new ArrayList<>();
+
+        while (rs.next()) {
+            int role = rs.getInt("access_mask");
+            String name = rs.getString("name");
+            int editable = rs.getInt("editable");
+            Access acs = new Access();
+            acs.setUrl(name);
+            acs.setRole(role);
+            acs.setEditable(editable);
+            list.add(acs);
+        }
+        return list;
     }
 }
