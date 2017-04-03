@@ -1,8 +1,6 @@
 package com.mvictorl.servlets;
 
-import com.mvictorl.beans.Division;
-import com.mvictorl.beans.User;
-import com.mvictorl.beans.Worker;
+import com.mvictorl.beans.*;
 import com.mvictorl.utils.DBUtils;
 import com.mvictorl.utils.MyUtils;
 
@@ -38,51 +36,57 @@ public class EditDivisionServlet extends HttpServlet {
         // Not logged in
         if (loginedUser == null) {
             // Redirect to login page.
-            RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/login");
+            RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/login");
             dispatcher.forward(request, response);
-        }
-
-        // Have not required roleID (root = 0)
-        if (loginedUser.getRole().getId() != 0) {
-            // Redirect to denied-error page
-            RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/WEB-INF/views/Denied.jsp");
-            dispatcher.forward(request, response);
-        }
-
-        Connection conn = MyUtils.getStoredConnection(request);
-
-        int id = Integer.parseInt(request.getParameter("id"));
-
-        Division division = null;
-        List<Worker> workers = new ArrayList<>();
-        String errorString = null;
-
-        try {
-            division = DBUtils.getDivision(conn, id);
-            workers = DBUtils.queryWorkerByFilial(conn, division.getFilial_id());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            errorString = e.getMessage();
-        }
-
-        // If no error.
-        // The filial does not exist to edit.
-        // Redirect to productList page.
-        if (errorString != null && division == null) {
-            response.sendRedirect(request.getServletPath() + "/divisionList");
             return;
         }
 
-        // Store errorString in request attribute, before forward to views.
-        request.setAttribute("errorString", errorString);
-        request.setAttribute("division", division);
-        request.setAttribute("workers", workers);
+        String cntx = request.getServletPath();
+        List<Access> acs = (ArrayList<Access>) request.getServletContext().getAttribute("access");
+        byte role = (byte) loginedUser.getRole().getId();
+        for (Access obj : acs) {
+            if (obj.getUrl().equals(cntx)) {
+                byte b = (byte) obj.getRole();
+                if ((b & role) == role) {
+                    Connection conn = MyUtils.getStoredConnection(request);
 
-        RequestDispatcher dispatcher = request.getServletContext()
-                .getRequestDispatcher("/WEB-INF/views/editDivisionView.jsp");
+                    int id = Integer.parseInt(request.getParameter("id"));
+
+                    Division division = null;
+                    List<Worker> workers = new ArrayList<>();
+                    String errorString = null;
+
+                    try {
+                        division = DBUtils.getDivision(conn, id);
+                        workers = DBUtils.queryWorkerByFilial(conn, division.getFilial_id());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        errorString = e.getMessage();
+                    }
+
+                    // If no error.
+                    // The filial does not exist to edit.
+                    // Redirect to productList page.
+                    if (errorString != null && division == null) {
+                        response.sendRedirect(request.getServletPath() + "/divisionList");
+                        return;
+                    }
+
+                    // Store errorString in request attribute, before forward to views.
+                    request.setAttribute("errorString", errorString);
+                    request.setAttribute("division", division);
+                    request.setAttribute("workers", workers);
+
+                    RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/editDivisionView.jsp");
+                    dispatcher.forward(request, response);
+                    return;
+                }
+            }
+        }
+        // Redirect to denied-error page
+        RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/Denied.jsp");
         dispatcher.forward(request, response);
+        return;
     }
 
     @Override

@@ -5,6 +5,10 @@
          version="3.1">
     <display-name>Classificator</display-name>
 
+    <listener>
+        <listener-class>com.mvictorl.listener.Listener</listener-class>
+    </listener>
+
 <!-- Filters [begin] -->
     <filter>
         <filter-name>jdbcFilter</filter-name>

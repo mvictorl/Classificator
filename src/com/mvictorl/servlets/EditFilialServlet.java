@@ -1,5 +1,6 @@
 package com.mvictorl.servlets;
 
+import com.mvictorl.beans.Access;
 import com.mvictorl.beans.Filial;
 import com.mvictorl.beans.User;
 import com.mvictorl.utils.DBUtils;
@@ -15,8 +16,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-@WebServlet(urlPatterns = { "/editFilial" })
+@WebServlet(urlPatterns = {"/editFilial"})
 public class EditFilialServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -38,44 +41,52 @@ public class EditFilialServlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getServletContext()
                     .getRequestDispatcher("/login");
             dispatcher.forward(request, response);
-        }
-
-        // Have not required roleID (root = 0)
-        if (loginedUser.getRole().getId() != 0) {
-            // Redirect to denied-error page
-            RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/WEB-INF/views/Denied.jsp");
-            dispatcher.forward(request, response);
-        }
-
-        Connection conn = MyUtils.getStoredConnection(request);
-
-        int id = Integer.parseInt(request.getParameter("id"));
-
-        Filial filial = null;
-        String errorString = null;
-
-        try {
-            filial = DBUtils.findFilial(conn, id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            errorString = e.getMessage();
-        }
-
-        // If no error.
-        // The filial does not exist to edit.
-        // Redirect to productList page.
-        if (errorString != null && filial == null) {
-            response.sendRedirect(request.getServletPath() + "/filialList");
             return;
         }
 
-        // Store errorString in request attribute, before forward to views.
-        request.setAttribute("errorString", errorString);
-        request.setAttribute("filial", filial);
+        String cntx = request.getServletPath();
+        List<Access> acs = (ArrayList<Access>) request.getServletContext().getAttribute("access");
+        byte role = (byte) loginedUser.getRole().getId();
+        for (Access obj : acs) {
+            if (obj.getUrl().equals(cntx)) {
+                byte b = (byte) obj.getRole();
+                if ((b & role) == role) {
+                    Connection conn = MyUtils.getStoredConnection(request);
 
+                    int id = Integer.parseInt(request.getParameter("id"));
+
+                    Filial filial = null;
+                    String errorString = null;
+
+                    try {
+                        filial = DBUtils.findFilial(conn, id);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        errorString = e.getMessage();
+                    }
+
+                    // If no error.
+                    // The filial does not exist to edit.
+                    // Redirect to productList page.
+                    if (errorString != null && filial == null) {
+                        response.sendRedirect(request.getServletPath() + "/filialList");
+                        return;
+                    }
+
+                    // Store errorString in request attribute, before forward to views.
+                    request.setAttribute("errorString", errorString);
+                    request.setAttribute("filial", filial);
+
+                    RequestDispatcher dispatcher = request.getServletContext()
+                            .getRequestDispatcher("/WEB-INF/views/editFilialView.jsp");
+                    dispatcher.forward(request, response);
+                    return;
+                }
+            }
+        }
+        // Redirect to denied-error page
         RequestDispatcher dispatcher = request.getServletContext()
-                .getRequestDispatcher("/WEB-INF/views/editFilialView.jsp");
+                .getRequestDispatcher("/WEB-INF/views/Denied.jsp");
         dispatcher.forward(request, response);
     }
 

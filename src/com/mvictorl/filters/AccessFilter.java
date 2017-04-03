@@ -2,8 +2,6 @@ package com.mvictorl.filters;
 
 import com.mvictorl.beans.Access;
 import com.mvictorl.beans.User;
-import com.mvictorl.connections.MySQLConnectionUtils;
-import com.mvictorl.utils.DBUtils;
 import com.mvictorl.utils.MyUtils;
 
 import javax.servlet.*;
@@ -13,16 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @WebFilter(filterName = "AccessFilter")
 public class AccessFilter implements Filter {
-    List<Access> acs = new ArrayList<>();
+    //List<Access> acs = new ArrayList<>();
 
     public void init(FilterConfig config) throws ServletException {
-        Connection conn = null;
+        /*Connection conn = null;
         String errorString = null;
 
         try {
@@ -44,7 +41,7 @@ public class AccessFilter implements Filter {
         if (errorString != null) {
             destroy();
         }
-        config.getServletContext().setAttribute("access", acs);
+        config.getServletContext().setAttribute("access", acs);*/
     }
 
     public void destroy() { }
@@ -61,6 +58,7 @@ public class AccessFilter implements Filter {
             role = (byte) user.getRole().getId();
         }
 
+        List<Access> acs = (ArrayList<Access>) request.getServletContext().getAttribute("access");
         String cntx = request.getServletPath();
         Connection conn = MyUtils.getStoredConnection(request);
 

@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/accssesList"})
+@WebServlet(urlPatterns = {"/accessList"})
 public class AccessListServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -41,12 +41,13 @@ public class AccessListServlet extends HttpServlet {
         }
 
         String cntx = request.getServletPath();
-        List<Access> acs = (ArrayList<Access>) request.getAttribute("access");
+        List<Access> acs = (ArrayList<Access>) request.getServletContext().getAttribute("access");
         byte role = (byte) loginedUser.getRole().getId();
         for (Access obj : acs) {
             if (obj.getUrl().equals(cntx)) {
                 byte b = (byte) obj.getRole();
                 if ((b & role) == role) {
+                    request.setAttribute("access", acs);
                     RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/accessListView.jsp");
                     dispatcher.forward(request, response);
                     return;
