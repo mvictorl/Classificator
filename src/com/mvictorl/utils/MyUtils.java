@@ -1,14 +1,20 @@
 package com.mvictorl.utils;
 
+import com.mvictorl.beans.Access;
 import com.mvictorl.beans.User;
 import com.mvictorl.beans.Worker;
+import com.mvictorl.connections.MySQLConnectionUtils;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyUtils {
     public static final String ATT_NAME_CONNECTION = "ATTRIBUTE_FOR_CONNECTION";
@@ -86,5 +92,31 @@ public class MyUtils {
         // 0 seconds (Expires immediately)
         cookieUserName.setMaxAge(0);
         response.addCookie(cookieUserName);
+    }
+
+    public static String addAccessParameter(ServletContext servletContext) {
+        List<Access> acs = new ArrayList<>();
+        Connection conn = null;
+        String errorString = null;
+
+        try {
+            conn = MySQLConnectionUtils.getConnection();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            errorString = e.getMessage();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            errorString += e.getMessage();
+        }
+        try {
+            acs = DBUtils.queryAccess(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            errorString += e.getMessage();
+        }
+        //MySQLConnectionUtils.closeQuietly(conn);
+        servletContext.setAttribute("access", acs);
+
+        return errorString;
     }
 }

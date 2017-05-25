@@ -1,0 +1,33 @@
+body{
+    padding-top: 40px;
+    padding-bottom: 65px;
+}
+
+.navbar-brand{
+    padding: 0px;
+}
+
+.navbar-brand>img{
+    height: 100%;
+    padding: 5px;
+    width: auto;
+}
+
+.navbar-fixed-top .navbar-collapse {
+    max-height: none;
+}
+
+.navbar-nav>li>a{
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.navbar .bootstrap-select{
+    padding: 8px 15px;
+}
+
+td{
+    padding: 5px;
+    vertical-align: top;
+    font-size: smaller;
+}

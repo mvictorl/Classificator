@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Classificator:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Classificator_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Classificator/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Classificator" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="mysql-connector-java-5.1.40-bin" />
+          <element id="library" level="project" name="javax.servlet.jsp.jstl-1.2.4" />
+          <element id="library" level="project" name="javax.servlet.jsp.jstl-api-1.2.1" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

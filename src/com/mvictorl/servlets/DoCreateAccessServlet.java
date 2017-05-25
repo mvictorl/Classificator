@@ -1,6 +1,5 @@
 package com.mvictorl.servlets;
 
-import com.mvictorl.beans.Filial;
 import com.mvictorl.beans.User;
 import com.mvictorl.utils.DBUtils;
 import com.mvictorl.utils.MyUtils;
@@ -14,12 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.TreeSet;
 
-@WebServlet(urlPatterns = { "/doCreateUser" })
-public class DoCreateUserServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/doCreateAccess"})
+public class DoCreateAccessServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    public DoCreateUserServlet() {
+    public DoCreateAccessServlet() {
         super();
     }
 
@@ -28,6 +28,11 @@ public class DoCreateUserServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String errorString = null;
+        TreeSet<Integer> lvl = new TreeSet();
+        lvl.add(1);
+        lvl.add(3);
+        lvl.add(7);
+        lvl.add(15);
 
         User user = (User) request.getSession().getAttribute("loginedUser");
         if (user.getRole().getId() > 1) {
@@ -35,53 +40,53 @@ public class DoCreateUserServlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getServletContext()
                     .getRequestDispatcher("/WEB-INF/views/home");
             dispatcher.forward(request, response);
-        }
-        else {
+        } else {
+
             Connection conn = MyUtils.getStoredConnection(request);
 
-            int id = Integer.parseInt(request.getParameter("id"));
-            String sh_name = (String) request.getParameter("sh_name");
-            String name = (String) request.getParameter("name");
+            int level = Integer.parseInt(request.getParameter("level"));
+            String url = (String) request.getParameter("url");
 
-            Filial filial = new Filial(id, name, sh_name);
-
-            // Check new filial correction record
-            Filial tmp = null;
-            try {
-                tmp = DBUtils.findFilial(conn, id);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                errorString = e.getMessage();
-            }
-            if (tmp == null) {
-                if (errorString == null) {
+            if (url != null) {
+                if (lvl.contains(level)) {
                     try {
-                        DBUtils.insertFilial(conn, filial);
+                        DBUtils.insertAccess(conn, url, level);
                     } catch (SQLException e) {
                         e.printStackTrace();
                         errorString = e.getMessage();
                     }
+                } else {
+                    errorString = "Недопустимые параметры!";
                 }
+            } else {
+                errorString = "Необходимо ввести URL!";
             }
-            else {
-                errorString = "Недопустимые параметры филиала!";
-            }
-
-            // Store infomation to request attribute, before forward to views.
-            request.setAttribute("errorString", errorString);
-            request.setAttribute("filial", filial);
 
             // If error, forward to Edit page.
             if (errorString != null) {
+                request.setAttribute("errorString", errorString);
+                request.setAttribute("url", url);
+
                 RequestDispatcher dispatcher = request.getServletContext()
-                        .getRequestDispatcher("/WEB-INF/views/createFilialView.jsp");
+                        .getRequestDispatcher("/WEB-INF/views/createAccessView.jsp");
                 dispatcher.forward(request, response);
+                return;
             }
 
             // If everything nice.
             // Redirect to the product listing page.
             else {
-                response.sendRedirect(request.getContextPath() + "/filialList");
+                errorString = MyUtils.addAccessParameter(request.getServletContext());
+                if (errorString != null) {
+                    request.setAttribute("errorString", errorString);
+                    RequestDispatcher dispatcher = request.getServletContext()
+                            .getRequestDispatcher("/accessList");
+                    dispatcher.forward(request, response);
+                    return;
+                }
+                else {
+                    response.sendRedirect(request.getContextPath() + "/accessList");
+                }
             }
         }
     }

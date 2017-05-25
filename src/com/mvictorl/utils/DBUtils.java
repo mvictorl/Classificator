@@ -611,4 +611,15 @@ public class DBUtils {
         }
         return list;
     }
+
+    public static void insertAccess(Connection conn, String url, int level) throws SQLException {
+        String sql = "INSERT INTO access(name, access_mask, editable) VALUES (?,?,?)";
+
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        pstm.setString(1, url);
+        pstm.setInt(2, level);
+        pstm.setInt(3, 1);
+
+        pstm.executeUpdate();
+    }
 }

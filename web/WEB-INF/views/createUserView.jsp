@@ -50,5 +50,6 @@
 <jsp:include page="_footer.jsp"/>
 <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap-select.js"></script>
 </body>
 </html>
